@@ -234,22 +234,20 @@ function renderNightActions() {
 }
 
 
+
 function renderTargetChoices(action, excludeSelf) {
   const box = $("tasks");
   if (!box) return;
 
-  box.innerHTML = `<h3>Chọn người chơi</h3>`;
+  box.innerHTML = "<h3>🎯 Chọn người chơi</h3>";
 
   getTargets(excludeSelf).forEach(p => {
     if (action === "wolf" && p.id === socket.id) return;
 
     box.appendChild(makeButton(p.name, () => {
       if (action === "witch") {
-        emit("night:action", {
-          action: "witch",
-          poisonTargetId: p.id
-        });
-        witchPoisonAvailable = false;
+        witchPoisonTargetId = p.id;
+        renderNightActions();
       } else {
         emit("night:action", {
           action,
@@ -258,7 +256,12 @@ function renderTargetChoices(action, excludeSelf) {
       }
     }));
   });
+
+  box.appendChild(makeButton("⬅️ Quay lại", () => {
+    renderNightActions();
+  }));
 }
+
 
 function renderMeeting() {
   const box = $("votes");
