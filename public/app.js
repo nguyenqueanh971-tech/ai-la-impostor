@@ -8,6 +8,8 @@ let currentRoom = null;
 let selectedTarget = "";
 let witchSaveAvailable = true;
 let witchPoisonAvailable = true;
+let witchSaveChoice = false;
+let witchPoisonTargetId = "";
 let audioEnabled = true;
 let language = "vi";
 
@@ -162,6 +164,60 @@ function renderNightActions() {
       renderTargetChoices("wolf", true);
     }));
   }
+
+  if (role === "seer") {
+    box.appendChild(makeButton("🔮 Soi một người", () => {
+      renderTargetChoices("seer", true);
+    }));
+  }
+
+  if (role === "guard") {
+    box.appendChild(makeButton("🛡️ Chọn người bảo vệ", () => {
+      renderTargetChoices("guard", true);
+    }));
+  }
+
+  if (role === "witch") {
+    if (witchSaveAvailable) {
+      box.appendChild(makeButton(
+        witchSaveChoice ? "💚 Đã chọn bình cứu ✓" : "💚 Chọn bình cứu",
+        () => {
+          witchSaveChoice = !witchSaveChoice;
+          renderNightActions();
+        }
+      ));
+    }
+
+    if (witchPoisonAvailable) {
+      box.appendChild(makeButton(
+        witchPoisonTargetId
+          ? "☠️ Đã chọn mục tiêu độc ✓"
+          : "☠️ Chọn người dùng bình độc",
+        () => renderTargetChoices("witch", true)
+      ));
+    }
+
+    box.appendChild(makeButton("✅ Xác nhận hành động", () => {
+      emit("night:action", {
+        action: "witch",
+        save: witchSaveChoice,
+        poisonTargetId: witchPoisonTargetId || undefined
+      });
+    }));
+
+    box.appendChild(makeButton("⏭️ Bỏ qua lượt", () => {
+      witchSaveChoice = false;
+      witchPoisonTargetId = "";
+      emit("night:action", { action: "skip" });
+    }));
+  }
+
+  if (["seer", "guard"].includes(role)) {
+    box.appendChild(makeButton("⏭️ Bỏ qua lượt", () => {
+      emit("night:action", { action: "skip" });
+    }));
+  }
+}
 
   if (role === "seer") {
     box.appendChild(makeButton("🔮 Soi một người", () => {
