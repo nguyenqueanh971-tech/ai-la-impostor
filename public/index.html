@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI LÀ IMPOSTOR</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>🚀 AI LÀ IMPOSTOR</h1>
+    <p class="subtitle">Tìm ra kẻ giả mạo trong phi hành đoàn!</p>
+
+    <section id="home">
+      <input id="name" maxlength="18" placeholder="Tên người chơi">
+      <button id="create">Tạo phòng mới</button>
+      <hr>
+      <input id="code" maxlength="6" placeholder="Mã phòng">
+      <button id="join">Tham gia phòng</button>
+    </section>
+
+    <section id="room" hidden>
+      <h2>Mã phòng: <span id="roomCode"></span></h2>
+      <h3>Người chơi</h3>
+      <ul id="players"></ul>
+      <button id="start" hidden>Bắt đầu game</button>
+      <h3 id="role"></h3>
+      <div id="tasks"></div>
+      <button id="meeting" hidden>Gọi họp khẩn cấp</button>
+      <div id="votes"></div>
+      <div id="message"></div>
+    </section>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
