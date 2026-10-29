@@ -576,11 +576,15 @@ io.on("connection", socket => {
         return cb({ error: "Không thể dùng bình độc lên mục tiêu này." });
       }
 
-      room.nightActions.witch = {
-        save: !!save,
-        poison: !!poisonTargetId,
-        poisonTargetId: poisonTarget ? poisonTarget.id : null
-      };
+      const previousWitchAction = room.nightActions.witch || {};
+
+room.nightActions.witch = {
+  save: !!save || previousWitchAction.save === true,
+  poison: !!poisonTargetId || previousWitchAction.poison === true,
+  poisonTargetId: poisonTarget
+    ? poisonTarget.id
+    : previousWitchAction.poisonTargetId || null
+};
     } else if (action === "skip" && ["seer", "guard", "witch"].includes(p.role)) {
       room.nightActions[p.role] = p.role === "witch"
         ? { save: false, poison: false }
