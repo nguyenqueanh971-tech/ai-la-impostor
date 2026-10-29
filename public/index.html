@@ -3,37 +3,178 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI LÀ IMPOSTOR</title>
-  <link rel="stylesheet" href="/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#100d24">
+  <title>AI LÀ SÓI 🐺</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <main class="container">
-    <h1>🚀 AI LÀ IMPOSTOR</h1>
-    <p class="subtitle">Tìm ra kẻ giả mạo trong phi hành đoàn!</p>
+  <div class="background-effects">
+    <div class="moon"></div>
+    <div class="stars"></div>
+  </div>
 
-    <section id="home">
-      <input id="name" maxlength="18" placeholder="Tên người chơi">
-      <button id="create">Tạo phòng mới</button>
-      <hr>
-      <input id="code" maxlength="6" placeholder="Mã phòng">
-      <button id="join">Tham gia phòng</button>
+  <header class="topbar">
+    <a class="brand" href="#">
+      <span class="brand-icon">🐺</span>
+      <span>AI LÀ SÓI</span>
+    </a>
+
+    <div class="top-controls">
+      <button id="language" class="small-button" type="button">🇻🇳 Tiếng Việt</button>
+      <button id="sound" class="small-button" type="button">🔊 Âm thanh</button>
+    </div>
+  </header>
+
+  <main class="main-container">
+
+    <!-- TRANG CHỦ -->
+    <section id="home" class="screen home-screen">
+      <div class="hero">
+        <div class="hero-emoji">🌕</div>
+        <p class="eyebrow">A SOCIAL DEDUCTION GAME</p>
+        <h1>AI LÀ <span>SÓI?</span></h1>
+        <p class="hero-description">
+          Màn đêm buông xuống... Ai là dân làng, ai đang ẩn mình trong bóng tối?
+        </p>
+        <p class="hero-description english">
+          Night is falling... Who is innocent, and who is hiding in the shadows?
+        </p>
+      </div>
+
+      <div class="home-card">
+        <label for="name">Tên người chơi / Player name</label>
+        <input
+          id="name"
+          type="text"
+          maxlength="18"
+          placeholder="Nhập tên của bạn..."
+          autocomplete="off"
+        >
+
+        <button id="create" class="primary-button" type="button">
+          🌙 TẠO PHÒNG MỚI
+        </button>
+
+        <div class="separator"><span>HOẶC / OR</span></div>
+
+        <label for="code">Mã phòng / Room code</label>
+        <input
+          id="code"
+          type="text"
+          maxlength="8"
+          placeholder="Nhập mã phòng..."
+          autocomplete="off"
+        >
+
+        <button id="join" class="secondary-button" type="button">
+          🚪 THAM GIA PHÒNG
+        </button>
+      </div>
+
+      <div class="game-info">
+        <div class="info-item">
+          <span>👥</span>
+          <strong>6–15</strong>
+          <small>Người chơi</small>
+        </div>
+        <div class="info-item">
+          <span>📱</span>
+          <strong>Online</strong>
+          <small>Điện thoại & máy tính</small>
+        </div>
+        <div class="info-item">
+          <span>🌐</span>
+          <strong>VI / EN</strong>
+          <small>Hai ngôn ngữ</small>
+        </div>
+      </div>
     </section>
 
-    <section id="room" hidden>
-      <h2>Mã phòng: <span id="roomCode"></span></h2>
-      <h3>Người chơi</h3>
-      <ul id="players"></ul>
-      <button id="start" hidden>Bắt đầu game</button>
-      <h3 id="role"></h3>
-      <div id="tasks"></div>
-      <button id="meeting" hidden>Gọi họp khẩn cấp</button>
-      <div id="votes"></div>
-      <div id="message"></div>
+    <!-- PHÒNG CHƠI -->
+    <section id="room" class="screen room-screen" hidden>
+      <div class="room-header">
+        <div>
+          <p class="eyebrow">PRIVATE GAME ROOM</p>
+          <h2>🏰 Phòng chơi</h2>
+        </div>
+        <div class="room-code-box">
+          <small>MÃ PHÒNG / ROOM CODE</small>
+          <strong id="roomCode">------</strong>
+        </div>
+      </div>
+
+      <div class="phase-card">
+        <span class="phase-icon">🌙</span>
+        <div>
+          <small>TRẠNG THÁI TRÒ CHƠI</small>
+          <h3 id="phase">Đang chờ người chơi...</h3>
+        </div>
+      </div>
+
+      <!-- VAI TRÒ BÍ MẬT -->
+      <div id="role" class="role-card">
+        <div class="role-placeholder">
+          <span>🎴</span>
+          <h3>Vai trò bí mật</h3>
+          <p>Vai trò của bạn sẽ được tiết lộ khi trò chơi bắt đầu.</p>
+        </div>
+      </div>
+
+      <!-- NGƯỜI CHƠI -->
+      <div class="panel">
+        <div class="panel-heading">
+          <h3>👥 Người chơi</h3>
+          <span class="player-limit">Tối đa 15 người</span>
+        </div>
+
+        <div id="players" class="players-list">
+          <p class="empty-state">Đang tải danh sách người chơi...</p>
+        </div>
+
+        <button id="start" class="primary-button start-button" type="button">
+          ⚔️ BẮT ĐẦU TRÒ CHƠI
+        </button>
+
+        <p class="hint">Chỉ chủ phòng mới có thể bắt đầu trò chơi.</p>
+      </div>
+
+      <!-- HÀNH ĐỘNG TRONG GAME -->
+      <div id="tasks" class="panel actions-panel">
+        <div class="panel-heading">
+          <h3>🎯 Hành động của bạn</h3>
+        </div>
+        <p class="empty-state">Hành động sẽ xuất hiện tùy theo vai trò và giai đoạn chơi.</p>
+      </div>
+
+      <!-- HỌP VÀ BỎ PHIẾU -->
+      <div id="meeting" class="panel meeting-panel">
+        <div class="panel-heading">
+          <h3>🗣️ Cuộc họp làng</h3>
+        </div>
+        <p class="empty-state">Khi đến thời điểm thảo luận, bạn có thể cùng dân làng tìm ra Sói.</p>
+      </div>
+
+      <div id="votes" class="panel votes-panel">
+        <div class="panel-heading">
+          <h3>🗳️ Bỏ phiếu</h3>
+        </div>
+      </div>
+
+      <!-- THÔNG BÁO -->
+      <div id="message" class="message-box" role="status" aria-live="polite">
+        Chào mừng đến với ngôi làng!
+      </div>
     </section>
+
   </main>
 
+  <footer class="footer">
+    <p>🐺 AI LÀ SÓI? · Trust no one after dark.</p>
+  </footer>
+
   <script src="/socket.io/socket.io.js"></script>
-  <script src="/app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
