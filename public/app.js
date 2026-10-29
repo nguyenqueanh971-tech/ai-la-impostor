@@ -19,8 +19,13 @@ function say(message) {
 }
 
 function show(id) {
-  document.querySelectorAll(".screen").forEach(x => x.classList.add("hidden"));
-  if ($(id)) $(id).classList.remove("hidden");
+  document.querySelectorAll(".screen").forEach(x => {
+    x.hidden = true;
+  });
+
+  if ($(id)) {
+    $(id).hidden = false;
+  }
 }
 
 function roleName(role) {
