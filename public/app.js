@@ -373,12 +373,41 @@ socket.on("meeting:started", data => {
   renderMeeting();
 });
 
+
 socket.on("meeting:result", data => {
+  const box = $("votes");
+
+  if (box) {
+    box.innerHTML = "<h3>📊 KẾT QUẢ BỎ PHIẾU</h3>";
+
+    const counts = data.counts || {};
+
+    currentRoom.players.forEach(player => {
+      const votes = counts[player.id] || 0;
+
+      const line = document.createElement("p");
+      line.textContent = `👤 ${player.name}: ${votes} phiếu`;
+      box.appendChild(line);
+    });
+
+    const skipLine = document.createElement("p");
+    skipLine.textContent = `⏭️ Bỏ phiếu trắng: ${counts.skip || 0} phiếu`;
+    box.appendChild(skipLine);
+
+    const resultLine = document.createElement("h3");
+    resultLine.textContent = data.ejected
+      ? `⚖️ ${data.ejected.name} bị treo cổ! Vai trò: ${data.ejected.roleName}`
+      : "⚖️ Không ai bị treo cổ!";
+    box.appendChild(resultLine);
+  }
+
   say(data.ejected
-    ? `⚖️ ${data.ejected.name} đã bị treo cổ. Vai trò: ${data.ejected.roleName}`
-    : "⚖️ Không ai bị treo cổ.");
+    ? `⚖️ ${data.ejected.name} đã bị loại!`
+    : "⚖️ Không ai bị loại.");
+
   playTone(350);
 });
+
 
 socket.on("hunter:turn", data => {
   say(`🏹 ${data.hunterName} được chọn một người bắn!`);
