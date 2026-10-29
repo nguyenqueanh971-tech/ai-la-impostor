@@ -609,30 +609,41 @@ room.nightActions.witch = {
     cb({ ok: true });
   });
 
+
   socket.on("meeting:vote", ({ code, targetId } = {}, cb = () => {}) => {
     const room = rooms.get(String(code || "").toUpperCase());
     const p = room && findPlayer(room, socket);
 
-    if (!room || !p || room.phase !== "meeting" || !p.alive) {
+    if (!room || !p || room.phase !== "meeting" || !p.alive || !room.meeting) {
       return cb({ error: "Bạn không thể bỏ phiếu." });
     }
 
-    if (
-      targetId !== "skip" &&
-      (!getPlayer(room, targetId) || !getPlayer(room, targetId).alive)
-    ) {
-      return cb({ error: "Người được chọn không hợp lệ." });
+    // Mỗi người chỉ được bỏ phiếu một lần
+    if (room.meeting.votes.has(p.id)) {
+      return cb({ error: "Bạn đã bỏ phiếu rồi." });
+    }
+
+    // Không được tự bỏ phiếu cho mình
+    if (targetId !== "skip") {
+      const target = getPlayer(room, targetId);
+
+      if (!target || !target.alive || target.id === p.id) {
+        return cb({ error: "Người được chọn không hợp lệ." });
+      }
     }
 
     room.meeting.votes.set(p.id, targetId);
+
     emitRoom(room);
 
+    cb({ ok: true });
+
+    // Tất cả người còn sống đã bỏ phiếu thì chốt kết quả
     if (alivePlayers(room).every(x => room.meeting.votes.has(x.id))) {
       resolveMeeting(room.code);
     }
-
-    cb({ ok: true });
   });
+
 
   socket.on("hunter:shoot", ({ code, targetId } = {}, cb = () => {}) => {
     const room = rooms.get(String(code || "").toUpperCase());
