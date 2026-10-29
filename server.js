@@ -206,6 +206,8 @@ function startNight(room) {
   room.nightActions = {};
   room.meeting = null;
   room.nightEndsAt = Date.now() + NIGHT_SECONDS * 1000;
+  
+  sendPrivateRoles(room);
 
   io.to(room.code).emit("night:started", {
     round: room.round,
