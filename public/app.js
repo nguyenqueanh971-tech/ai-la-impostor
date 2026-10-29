@@ -382,6 +382,9 @@ socket.on("game:private", data => {
 });
 
 socket.on("night:started", data => {
+  witchSaveChoice = false;
+  witchPoisonTargetId = "";
+
   say(`🌙 Đêm ${data.round} bắt đầu. Hãy thực hiện hành động bí mật!`);
   playTone(180, 0.5);
 });
